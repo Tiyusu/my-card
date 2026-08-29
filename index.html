@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-TW"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;有一封給你的信件！&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Helvetica Neue', Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>perspective: 1000px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 背景雲朵裝飾 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.4;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: floatClouds 20s linear infinite;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud::before, .cloud::after {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c1 { width: 150px; height: 50px; top: 15%; left: -160px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c1::before { width: 70px; height: 70px; top: -35px; left: 20px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c1::after { width: 50px; height: 50px; top: -25px; left: 80px; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c2 { width: 200px; height: 60px; top: 50%; left: -210px; animation-delay: 5s; animation-duration: 25s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c2::before { width: 90px; height: 90px; top: -45px; left: 30px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.cloud.c2::after { width: 60px; height: 60px; top: -30px; left: 100px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes floatClouds {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: translateX(0); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: translateX(calc(100vw + 210px)); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 提示文字 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.hint {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 20%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #557a95;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: pulse 1.5s infinite alternate;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-shadow: 1px 1px 2px rgba(255,255,255,0.8);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 10;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulse {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { opacity: 0.6; transform: scale(0.95); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { opacity: 1; transform: scale(1.05); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 3D 場景容器 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.scene {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 200px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform-style: preserve-3d;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 1s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* ================= 紙飛機 CSS ================= */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.paper-plane {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform-style: preserve-3d;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: flyAround 4s ease-in-out infinite alternate;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* SVG 紙飛機造型 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.plane-svg {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 150px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 150px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fill: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.15));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: rotate(-15deg);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes flyAround {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: translateY(0) rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: translateY(-15px) rotate(3deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: translateY(10px) rotate(-2deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* ================= 卡片 CSS ================= */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 320px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 450px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0,0,0,0.15);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(0) rotate(-10deg);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 8px solid #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline: 2px dashed #b5d5ff;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card h1 {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #ff6b6b;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card p {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #4a4a4a;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.8;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>white-space: pre-line;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card .decor {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: bounce 1s infinite alternate;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes bounce {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: translateY(0); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: translateY(-10px); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* ================= 狀態切換 ================= */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 點擊後隱藏飛機與提示 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.clicked .paper-plane, .clicked .hint {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(0) translateY(-100px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.5s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 點擊後顯示卡片 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.clicked .card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1) rotate(0deg);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: auto;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 慶祝紙花 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.confetti {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f00;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: confettiFall 3s linear forwards;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes confettiFall {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 背景飄動的雲朵 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cloud c1"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cloud c2"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 提示文字 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hint" id="hintText"&gt;點擊紙飛機打開卡片 ✈️&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 主互動場景 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="scene" id="mainScene" onclick="openCard()"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 紙飛機物體 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="paper-plane"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 使用內嵌 SVG 畫出俐落的紙飛機 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;svg class="plane-svg" viewBox="0 0 24 24"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 卡片物體 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card" id="letterCard"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;親愛的朋友：&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;好久不見！</p>
+<p class="p1"><span class="Apple-converted-space">               </span>這是一封用網頁寫給你的卡片。</p>
+<p class="p1"><span class="Apple-converted-space">               </span>祝你今天天天開心，</p>
+<p class="p1"><span class="Apple-converted-space">               </span>心想事成！✨</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="decor"&gt;❤️&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function openCard() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const scene = document.getElementById('mainScene');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 如果已經打開過就不重複執行</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (scene.classList.contains('clicked')) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 1. 切換 Class，觸發 CSS 隱藏飛機、放大卡片的動畫</p>
+<p class="p1"><span class="Apple-converted-space">            </span>scene.classList.add('clicked');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 2. 釋放彩色慶祝紙花</p>
+<p class="p1"><span class="Apple-converted-space">            </span>createConfetti();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createConfetti() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#ff0a54'];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; 100; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const confetti = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.classList.add('confetti');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 隨機樣式設定</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.left = Math.random() * 100 + 'vw';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.top = '-5% ';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.width = Math.random() * 8 + 5 + 'px';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.height = Math.random() * 8 + 5 + 'px';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.animationDelay = Math.random() * 1.5 + 's';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>confetti.style.animationDuration = Math.random() * 2 + 2 + 's';</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.body.appendChild(confetti);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 動畫結束後移除元素，避免卡頓</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; confetti.remove(), 4000);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
