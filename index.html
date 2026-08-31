@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>給波波的專屬情書 ✈️</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            perspective: 1200px;
+            background: #74b9ff;
+            /* 1. 天空背景每 5 秒變換一次 (白天 -> 晚上 -> 白天) */
+            animation: skyCycle 10s steps(1, end) infinite;
+            transition: background 1.5s ease;
+        }
+
+        @keyframes skyCycle {
+            0%, 100% { background: #74b9ff; } /* 白天 (0-5秒) */
+            50% { background: #0b1d3a; }     /* 晚上 (5-10秒) */
+        }
+
+        /* ================= 晚上：閃爍星星 ================= */
+        .stars-container {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; pointer-events: none; z-index: 1;
+            opacity: 0;
+            animation: starsVisibility 10s steps(1, end) infinite;
+        }
+        @keyframes starsVisibility {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .star {
+            position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%;
+            animation: twinkle 1.5s infinite ease-in-out alternate;
+        }
+        @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+
+        /* ================= 白天：剪紙風飄動雲朵 ================= */
+        .clouds-container {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; pointer-events: none; z-index: 2;
+            animation: cloudsVisibility 10s steps(1, end) infinite;
+        }
+        @keyframes cloudsVisibility {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cloud-svg {
+            position: absolute; fill: #ffffff;
+            filter: drop-shadow(0px 8px 6px rgba(0,0,0,0.08));
+            animation: floatBack 12s linear infinite;
+        }
+        /* 讓不同雲朵有不同的初始位置與速度 */
+        .c1 { width: 180px; top: 10%; left: 80%; animation-duration: 14s; }
+        .c2 { width: 140px; top: 45%; left: 90%; animation-duration: 10s; }
+        .c3 { width: 220px; bottom: 5%; left: 75%; animation-duration: 16s; }
+        @keyframes floatBack {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-300px); }
+        }
+
+        /* ================= 背景地圖動態流轉 ================= */
+        .map-stage {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; pointer-events: none; z-index: 1;
+        }
+        .map-section {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transform: translateX(50vw);
+            animation: mapSequence 24s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        /* 地圖文字與虛線航線樣式 */
+        .map-label {
+            font-size: 28px; font-weight: bold; color: rgba(255,255,255,0.8);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-top: 20vh;
+        }
+        .flight-line {
+            width: 60%; height: 4px; border-bottom: 4px dashed rgba(255,255,255,0.5);
+            margin-top: 20px; position: relative;
+        }
+        /* 地圖依序進場、出場，最後美國停住 */
+        .map-australia { animation-delay: 1s; }
+        .map-taiwan { animation-delay: 8s; }
+        .map-usa { animation-delay: 15s; }
+
+        @keyframes mapSequence {
+            0% { opacity: 0; transform: translateX(60vw); }
+            10%, 80% { opacity: 1; transform: translateX(0); }
+            90%, 100% { opacity: 0; transform: translateX(-60vw); }
+        }
+        /* 美國地圖最後停留在原地不消失 */
+        .map-usa { animation: mapUSA 8s cubic-bezier(0.25, 1, 0.5, 1) 15s forwards; }
+        @keyframes mapUSA {
+            0% { opacity: 0; transform: translateX(60vw); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ================= 向量黃色紙飛機 ================= */
+        .scene { position: relative; width: 400px; height: 300px; transform-style: preserve-3d; z-index: 10; cursor: pointer; }
+        
+        .paper-plane-yellow {
+            position: absolute; width: 260px; height: 180px;
+            left: 20%; top: 20%; transform-style: preserve-3d;
+            animation: planeHover 4s ease-in-out infinite alternate;
+            transition: all 0.8s ease;
+        }
+        .plane-svg-raw {
+            width: 100%; height: 100%;
+            filter: drop-shadow(15px 30px 20px rgba(0,0,0,0.25));
+        }
+        @keyframes planeHover {
+            0% { transform: translate3d(0, 0, 0) rotateX(2deg) rotateY(-5deg) rotateZ(2deg); }
+            100% { transform: translate3d(15px, -20px, 30px) rotateX(-2deg) rotateY(-10deg) rotateZ(-1deg); }
+        }
+
+        /* 提示字 */
+        .hint {
+            position: absolute; top: 12%; color: #fff; font-size: 22px; font-weight: bold;
+            text-shadow: 0 3px 12px rgba(0,0,0,0.4); animation: pulse 1.5s infinite alternate;
+            z-index: 15; text-align: center; width: 100%; pointer-events: none;
+        }
+        @keyframes pulse { 0% { opacity: 0.7; transform: scale(0.96); } 100% { opacity: 1; transform: scale(1.04); } }
+
+        /* ================= 互動小卡系統 ================= */
+        .card-container {
+            position: absolute; width: 360px; height: 500px; transform-style: preserve-3d;
+            opacity: 0; transform: scale(0) rotateY(-180deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none; z-index: 30;
+        }
+        .card {
+            position: absolute; width: 100%; height: 100%; background: white; border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35); padding: 35px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            border: 6px solid #fff; outline: 2px dashed rgba(0,0,0,0.1);
+            transition: background-color 0.5s ease, transform 0.2s;
+        }
+        .card-content {
+            color: #333; line-height: 1.8; font-size: 16px; font-weight: 500;
+            white-space: pre-line; text-align: justify; overflow-y: auto;
+        }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .card-btn {
+            background: #ff6b6b; color: white; border: none; padding: 10px 22px;
+            border-radius: 25px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255,107,107,0.3); transition: transform 0.2s;
+        }
+        .card-btn:hover { transform: scale(1.05); }
+        .page-num { font-size: 14px; color: #777; font-weight: bold; }
+
+        /* 點擊切換後的狀態 */
+        .opened .paper-plane-yellow, .opened .hint, .opened .map-stage {
+            opacity: 0; transform: scale(0) translateY(-100px); pointer-events: none;
+        }
+        .opened .card-container { opacity: 1; transform: scale(1) rotateY(0deg); pointer-events: auto; }
+
+        /* 彩色撒花 */
+        .confetti {
+            position: absolute; width: 12px; height: 12px;
+            animation: confettiFall 3.5s linear forwards; opacity: 0; z-index: 40;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 晚上星空 -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- 白天雲朵 (還原圖片中精緻剪紙堆疊感) -->
+    <div class="clouds-container">
+        <!-- 雲朵形狀 SVG -->
+        <svg class="cloud-svg c1" viewBox="0 0 100 40"><path d="M10,30 Q15,15 30,20 Q45,5 65,15 Q85,10 90,30 Z"/></svg>
+        <svg class="cloud-svg c2" viewBox="0 0 100 40"><path d="M10,30 Q15,15 30,20 Q45,5 65,15 Q85,10 90,30 Z"/></svg>
+        <svg class="cloud-svg c3" viewBox="0 0 100 40"><path d="M10,30 Q15,15 30,20 Q45,5 65,15 Q85,10 90,30 Z"/></svg>
+    </div>
+
+    <!-- 航線與地圖移動舞台 -->
+    <div class="map-stage">
+        <div class="map-section map-australia">
+            <div class="map-label">📍 澳洲 ANZ</div>
+            <div class="flight-line"></div>
+        </div>
+        <div class="map-section map-taiwan">
+            <div class="map-label">📍 台灣 (台北 ➔ 嘉義)</div>
+            <div class="flight-line"></div>
+        </div>
+        <div class="map-section map-usa">
+            <div class="map-label">📍 美國 Clearwater</div>
+            <div class="flight-line"></div>
+        </div>
+    </div>
+
+    <div class="hint">✈️ 點擊黃色紙飛機，打開給波波的信...</div>
+
+    <!-- 主互動場景 -->
+    <div class="scene" id="mainScene" onclick="launchCard()">
+        <!-- 完美還原圖片中的黃色立體紙飛機向量檔 -->
+        <div class="paper-plane-yellow">
+            <svg class="plane-svg-raw" viewBox="0 0 500 350">
+                <!-- 運用亮黃與深橘黃色區塊，畫出圖片上的摺紙立體光影 -->
+                <polygon points="250,50 120,240 250,210" fill="#fab1a0" /> <!-- 底層陰影面 -->
+                <polygon points="250,50 380,240 250,210" fill="#e17055" /> 
+                <polygon points="250,50 20,220 120,240" fill="#ffeaa7" />  <!-- 左翼亮面 -->
+                <polygon points="250,50 480,220 380,240" fill="#fdcb6e" />  <!-- 右翼暗面 -->
+                <polygon points="250,210 120,240 250,260" fill="#e17055" /> <!-- 機腹折線 -->
+                <polygon points="250,210 380,240 250,260" fill="#d63031" />
+            </svg>
+        </div>
+
+        <!-- 互動小卡容器 -->
+        <div class="card-container" id="cardContainer" onclick="event.stopPropagation();">
+            <div class="card" id="interactiveCard">
+                <div class="card-content" id="cardTxt"></div>
+                <div class="card-footer">
