@@ -150,7 +150,8 @@
             50% { transform: translateX(0); opacity: 1; }
             100% { transform: translateX(-50vw); opacity: 0; }
         }
-        #bgMusic { width: 0; height: 0; position: absolute; visibility: hidden; }
+        /* 隱藏官方播放器容器 */
+        #yt-player-container { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -169,7 +170,10 @@
             <div class="decor" id="cardDecor">❤️</div>
         </div>
     </div>
-    <iframe id="bgMusic" allow="autoplay" src=""></iframe>
+    <!-- 放置隱藏 YouTube 播放器的容器 -->
+    <div id="yt-player-container"><div id="player"></div></div>
+    <!-- 載入官方 YouTube Player API -->
+    <script src="https://youtube.com"></script>
     <script>
         const cardData = [
             {
@@ -182,24 +186,49 @@
             },
             {
                 text: "波波，我想要等孩子長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
-                decor: "城堡🏰"
+                decor: "🏰"
             }
         ];
         let currentCardIndex = 0;
         let isFirstClick = true;
         let isAnimating = false;
-        // 🛠️ 修正處：正確讀取第一張卡片的文字
+        let ytPlayer = null;
+        // 初始化載入第一張卡片的文字
         document.getElementById('cardContent').innerText = cardData[0].text;
         document.getElementById('cardDecor').innerText = cardData[0].decor;
+        // YouTube API 準備就緒時會自動觸發這個函式
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'nSDgHBxUbVQ', // 您的歌曲 ID
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'showinfo': 0
+                }
+            });
+        }
         function handleSceneClick() {
             if (isAnimating) return;
             const scene = document.getElementById('mainScene');
             if (isFirstClick) {
+                // 1. 優先執行開啟卡片與彩帶動畫（防錯：就算音樂出問題，卡片也絕對打得開）
                 scene.classList.add('clicked');
                 document.getElementById('hintText').style.display = 'none';
                 createConfetti();
-                document.getElementById('bgMusic').src = "https://youtube.com";
                 isFirstClick = false;
+                // 2. 在後面安全的調用 YouTube 播放機制
+                try {
+                    if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                        ytPlayer.playVideo();
+                    }
+                } catch (e) {
+                    console.log("音樂播放受限，但不影響卡片彈出：", e);
+                }
             } else {
                 triggerFlightAndNextCard();
             }
@@ -222,22 +251,3 @@
             card.style.transform = 'scale(0) rotate(10deg)';
             card.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('cardContent').innerText = cardData[currentCardIndex].text;
-                document.getElementById('cardDecor').innerText = cardData[currentCardIndex].decor;
-                card.style.transform = 'scale(1) rotate(0deg)';
-                card.style.opacity = '1';
-                createConfetti();
-            }, 600);
-            setTimeout(() => {
-                container.remove();
-                isAnimating = false;
-            }, 3000);
-        }
-        function createConfetti() {
-            const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#ff0a54'];
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-5%';
