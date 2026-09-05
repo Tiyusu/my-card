@@ -112,6 +112,25 @@
         .card h1 { color: #ff6b6b; margin-bottom: 15px; font-size: 26px; }
         .card p { color: #4a4a4a; line-height: 1.6; font-size: 15px; white-space: pre-line; word-break: break-word; }
         .card .decor { font-size: 35px; margin-top: 15px; animation: bounce 1s infinite alternate; }
+        .music-button {
+            margin-top: 16px;
+            border: 0;
+            background: #ff6b6b;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 10px 18px;
+            border-radius: 999px;
+            box-shadow: 0 8px 16px rgba(255, 107, 107, 0.25);
+            cursor: pointer;
+            display: none;
+        }
+        .music-button:active { transform: translateY(1px); }
+        .clicked .music-button { display: inline-flex; }
+        .music-button.playing {
+            background: #6bcB77;
+            box-shadow: 0 8px 16px rgba(107, 203, 119, 0.25);
+        }
         @keyframes bounce {
             0% { transform: translateY(0); }
             100% { transform: translateY(-10px); }
@@ -155,11 +174,28 @@
         }
         #yt-player-container {
             position: absolute;
-            width: 1px;
-            height: 1px;
+            left: 50%;
+            bottom: 16px;
+            width: min(280px, calc(100vw - 36px));
+            aspect-ratio: 16 / 9;
+            transform: translate(-50%, 18px);
             opacity: 0;
             pointer-events: none;
             overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 14px 30px rgba(43, 88, 118, 0.22);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 30;
+        }
+        #yt-player-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, 0);
+        }
+        #yt-player-container iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
         @media (max-width: 420px) {
             .hint { top: 14%; font-size: 18px; }
@@ -181,9 +217,10 @@
             </svg>
         </div>
         <div class="card active" id="letterCard">
-            <h1>波波</h1>
+            <h1>波波：</h1>
             <p id="cardContent">載入中...</p>
             <div class="decor" id="cardDecor">❤️</div>
+            <button class="music-button" id="musicButton" type="button" onclick="playMusic(event)">播放音樂 ♪</button>
         </div>
     </div>
 
@@ -192,7 +229,7 @@
             id="songFrame"
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy"
+            src="https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&enablejsapi=1&playsinline=1"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -212,8 +249,12 @@
                 decor: "✨"
             },
             {
-                text: "想要等孩子們長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
+                text: "想要等孩子長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
                 decor: "🏰"
+            },
+             {
+                text: "我想要和你一起攜手度過，一起面對生活",
+                decor: "❤️"
             }
         ];
 
@@ -227,6 +268,8 @@
         const letterCard = document.getElementById('letterCard');
         const hintText = document.getElementById('hintText');
         const songFrame = document.getElementById('songFrame');
+        const musicButton = document.getElementById('musicButton');
+        const musicPlayer = document.getElementById('yt-player-container');
 
         cardContent.innerText = cardData[0].text;
         cardDecor.innerText = cardData[0].decor;
@@ -240,18 +283,22 @@
                 scene.classList.add('clicked');
                 hintText.style.display = 'none';
                 createConfetti();
-                startSong();
                 isFirstClick = false;
             } else {
                 triggerFlightAndNextCard();
             }
         }
 
-        function startSong() {
+        function playMusic(event) {
+            event.stopPropagation();
+
             if (hasStartedSong) return;
 
             hasStartedSong = true;
-            songFrame.src = 'https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&autoplay=1';
+            musicButton.innerText = '音樂播放中 ♪';
+            musicButton.classList.add('playing');
+            musicPlayer.classList.add('visible');
+            songFrame.src = 'https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&enablejsapi=1&playsinline=1&autoplay=1&controls=1';
         }
 
         function triggerFlightAndNextCard() {
