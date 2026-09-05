@@ -55,8 +55,9 @@
             100% { transform: scale(1.05); opacity: 1; }
         }
         .scene {
-            width: 320px;
-            height: 450px;
+            width: min(320px, calc(100vw - 36px));
+            height: min(450px, calc(100vh - 110px));
+            min-height: 420px;
             position: relative;
             transform-style: preserve-3d;
             cursor: pointer;
@@ -87,8 +88,10 @@
         }
         .card {
             position: absolute;
-            width: 320px;
-            height: 450px;
+            width: 100%;
+            height: 100%;
+            max-height: 450px;
+            overflow-y: auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -107,7 +110,7 @@
             z-index: 2;
         }
         .card h1 { color: #ff6b6b; margin-bottom: 15px; font-size: 26px; }
-        .card p { color: #4a4a4a; line-height: 1.6; font-size: 15px; white-space: pre-line; word-break: break-all; }
+        .card p { color: #4a4a4a; line-height: 1.6; font-size: 15px; white-space: pre-line; word-break: break-word; }
         .card .decor { font-size: 35px; margin-top: 15px; animation: bounce 1s infinite alternate; }
         @keyframes bounce {
             0% { transform: translateY(0); }
@@ -150,8 +153,21 @@
             50% { transform: translateX(0); opacity: 1; }
             100% { transform: translateX(-50vw); opacity: 0; }
         }
-        /* 隱藏官方播放器容器 */
-        #yt-player-container { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+        #yt-player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        @media (max-width: 420px) {
+            .hint { top: 14%; font-size: 18px; }
+            .card { padding: 22px; }
+            .card h1 { font-size: 23px; }
+            .card p { font-size: 14px; }
+            .flight-text { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -165,78 +181,85 @@
             </svg>
         </div>
         <div class="card active" id="letterCard">
-            <h1>親愛的波波：</h1>
+            <h1>波波</h1>
             <p id="cardContent">載入中...</p>
             <div class="decor" id="cardDecor">❤️</div>
         </div>
     </div>
-    <!-- 放置隱藏 YouTube 播放器的容器 -->
-    <div id="yt-player-container"><div id="player"></div></div>
-    <!-- 載入官方 YouTube Player API -->
-    <script src="https://youtube.com"></script>
+
+    <div id="yt-player-container">
+        <iframe
+            id="songFrame"
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
+    </div>
+
     <script>
         const cardData = [
             {
-                text: "波波,謝謝你這陣子的陪伴與支持,因為有你讓我更積極努力的成為更好的自己,也因為有你的出現為我的生活跟生命點燃了希望。我希望能夠永遠和你一起去挑戰,去創造屬於我們的未來。\n\nAug30",
+                text: "謝謝你這陣子的陪伴與支持,因為有你讓我更積極努力的成為更好的自己,也因為有你的出現為我的生活跟生命點燃了希望。我希望能夠永遠和你一起去挑戰,去創造屬於我們的未來。\n\nAug30",
                 decor: "❤️"
             },
             {
-                text: "波波,你今天好嗎?總是最期待與你一起生活的時光,充滿了期待也同時有點緊張,因為我不知道你內心真正的想法。今天看了LRH大廳的設計,我感動到淚流滿面,你知道嗎?我很期待有一天可以帶著我們的孩子一起去那裡散步玩耍,我看到這麼美好的創造時,真的希望可以跟你一起欣賞這個美。\n\nAug30",
+                text: "你今天好嗎?總是最期待與你一起生活的時光,充滿了期待也同時有點緊張,因為我不知道你內心真正的想法。今天看了LRH大廳的設計,我感動到淚流滿面,你知道嗎?我很期待有一天可以帶著我們的孩子一起去那裡散步玩耍,我看到這麼美好的創造時,真的希望可以跟你一起欣賞這個美。\n\nAug30",
                 decor: "✨"
             },
             {
-                text: "波波，我想要等孩子長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
+                text: "想要等孩子們長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
                 decor: "🏰"
             }
         ];
+
         let currentCardIndex = 0;
         let isFirstClick = true;
         let isAnimating = false;
-        let ytPlayer = null;
-        // 初始化載入第一張卡片的文字
-        document.getElementById('cardContent').innerText = cardData[0].text;
-        document.getElementById('cardDecor').innerText = cardData[0].decor;
-        // YouTube API 準備就緒時會自動觸發這個函式
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('player', {
-                height: '0',
-                width: '0',
-                videoId: 'nSDgHBxUbVQ', // 您的歌曲 ID
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'showinfo': 0
-                }
-            });
-        }
+        let hasStartedSong = false;
+
+        const cardContent = document.getElementById('cardContent');
+        const cardDecor = document.getElementById('cardDecor');
+        const letterCard = document.getElementById('letterCard');
+        const hintText = document.getElementById('hintText');
+        const songFrame = document.getElementById('songFrame');
+
+        cardContent.innerText = cardData[0].text;
+        cardDecor.innerText = cardData[0].decor;
+
         function handleSceneClick() {
             if (isAnimating) return;
+
             const scene = document.getElementById('mainScene');
+
             if (isFirstClick) {
-                // 1. 優先執行開啟卡片與彩帶動畫（防錯：就算音樂出問題，卡片也絕對打得開）
                 scene.classList.add('clicked');
-                document.getElementById('hintText').style.display = 'none';
+                hintText.style.display = 'none';
                 createConfetti();
+                startSong();
                 isFirstClick = false;
-                // 2. 在後面安全的調用 YouTube 播放機制
-                try {
-                    if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
-                        ytPlayer.playVideo();
-                    }
-                } catch (e) {
-                    console.log("音樂播放受限，但不影響卡片彈出：", e);
-                }
             } else {
                 triggerFlightAndNextCard();
             }
         }
+
+        function startSong() {
+            if (hasStartedSong) return;
+
+            hasStartedSong = true;
+            songFrame.src = 'https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&autoplay=1';
+        }
+
         function triggerFlightAndNextCard() {
             isAnimating = true;
+
             const container = document.createElement('div');
             container.classList.add('flight-text-container');
+
             const locations = ["澳洲ANZO", "台灣嘉義", "美國USA"];
             locations.forEach((loc, index) => {
                 const textDiv = document.createElement('div');
@@ -245,9 +268,47 @@
                 textDiv.style.animationDelay = `${index * 0.15}s`;
                 container.appendChild(textDiv);
             });
+
             document.body.appendChild(container);
             currentCardIndex = (currentCardIndex + 1) % cardData.length;
-            const card = document.getElementById('letterCard');
-            card.style.transform = 'scale(0) rotate(10deg)';
-            card.style.opacity = '0';
+            letterCard.style.transform = 'scale(0) rotate(10deg)';
+            letterCard.style.opacity = '0';
+
             setTimeout(() => {
+                cardContent.innerText = cardData[currentCardIndex].text;
+                cardDecor.innerText = cardData[currentCardIndex].decor;
+                letterCard.style.transform = 'scale(1) rotate(0deg)';
+                letterCard.style.opacity = '1';
+                createConfetti();
+            }, 600);
+
+            setTimeout(() => {
+                container.remove();
+                letterCard.style.transform = '';
+                letterCard.style.opacity = '';
+                isAnimating = false;
+            }, 3000);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffd166', '#6bcB77', '#4d96ff', '#f8a5c2'];
+
+            for (let i = 0; i < 36; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = `${-10 - Math.random() * 20}px`;
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = `${Math.random() * 0.8}s`;
+                confetti.style.animationDuration = `${2.2 + Math.random() * 1.4}s`;
+                confetti.style.transform = `rotate(${Math.random() * 180}deg)`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4200);
+            }
+        }
+    </script>
+</body>
+</html>
