@@ -150,7 +150,6 @@
             50% { transform: translateX(0); opacity: 1; }
             100% { transform: translateX(-50vw); opacity: 0; }
         }
-        /* 隱藏的 YouTube 音樂播放器，寬高設為0使其不佔空間 */
         #bgMusic { width: 0; height: 0; position: absolute; visibility: hidden; }
     </style>
 </head>
@@ -170,33 +169,26 @@
             <div class="decor" id="cardDecor">❤️</div>
         </div>
     </div>
-    <!-- YouTube 嵌入標籤，預設不啟用 src，等點擊後才載入播放 -->
     <iframe id="bgMusic" allow="autoplay" src=""></iframe>
     <script>
-        // 💡 這裡就是管理所有小卡的地方！
         const cardData = [
             {
                 text: "波波,謝謝你這陣子的陪伴與支持,因為有你讓我更積極努力的成為更好的自己,也因為有你的出現為我的生活跟生命點燃了希望。我希望能夠永遠和你一起去挑戰,去創造屬於我們的未來。\n\nAug30",
                 decor: "❤️"
             },
             {
-                text: "波波,你今天好嗎?總是很期待與你一起生活的時光,充滿了期待也同時有點緊張,因為我不知道你內心真正的想法。今天看了LRH大廳的設計,我感動到淚流滿面,你知道嗎?我很期待有一天可以帶著我們的孩子一起去那裡散步玩耍,我看到這麼美好的創造時,真的希望可以跟你一起欣賞這個美。\n\nAug30",
+                text: "波波,你今天好嗎?總是最期待與你一起生活的時光,充滿了期待也同時有點緊張,因為我不知道你內心真正的想法。今天看了LRH大廳的設計,我感動到淚流滿面,你知道嗎?我很期待有一天可以帶著我們的孩子一起去那裡散步玩耍,我看到這麼美好的創造時,真的希望可以跟你一起欣賞這個美。\n\nAug30",
                 decor: "✨"
             },
             {
                 text: "波波，我想要等孩子長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
-                decor: "🏰"
+                decor: "城堡🏰"
             }
-            // 📝 想要加第4張、第5張，直接在下方點複製貼上這段即可：
-            // ,{
-            //     text: "在這裡輸入你想說的第4張小卡文字...",
-            //     decor: "🌟"
-            // }
         ];
         let currentCardIndex = 0;
         let isFirstClick = true;
         let isAnimating = false;
-        // 初始載入第一張卡片的文字
+        // 🛠️ 修正處：正確讀取第一張卡片的文字
         document.getElementById('cardContent').innerText = cardData[0].text;
         document.getElementById('cardDecor').innerText = cardData[0].decor;
         function handleSceneClick() {
@@ -206,7 +198,6 @@
                 scene.classList.add('clicked');
                 document.getElementById('hintText').style.display = 'none';
                 createConfetti();
-                // 🎶 打開卡片時載入並自動播放 YouTube 背景音樂
                 document.getElementById('bgMusic').src = "https://youtube.com";
                 isFirstClick = false;
             } else {
@@ -226,7 +217,6 @@
                 container.appendChild(textDiv);
             });
             document.body.appendChild(container);
-            // 切換到下一張卡片索引（如果到底了會自動重頭循環）
             currentCardIndex = (currentCardIndex + 1) % cardData.length;
             const card = document.getElementById('letterCard');
             card.style.transform = 'scale(0) rotate(10deg)';
@@ -245,3 +235,9 @@
         }
         function createConfetti() {
             const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#ff0a54'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-5%';
