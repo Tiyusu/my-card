@@ -1,495 +1,247 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>有一封給你的紙飛機！</title>
-
+    <title>波波 有給你的紙飛機！</title>
     <style>
-
-        * {
-
-            box-sizing: border-box;
-
-            margin: 0;
-
-            padding: 0;
-
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-
             height: 100vh;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             overflow: hidden;
-
             font-family: 'Helvetica Neue', Arial, sans-serif;
-
             perspective: 1000px;
-
         }
-
-
-
-        /* 背景雲朵裝飾 */
-
         .cloud {
-
             position: absolute;
-
             background: white;
-
             border-radius: 100px;
-
             opacity: 0.4;
-
-            animation: floatClouds 20s linear infinite;
-
+            animation: floatCloudsLeft 20s linear infinite;
         }
-
         .cloud::before, .cloud::after {
-
             content: '';
-
             position: absolute;
-
             background: white;
-
             border-radius: 50%;
-
         }
-
-        .cloud.c1 { width: 150px; height: 50px; top: 15%; left: -160px; }
-
+        .cloud.c1 { width: 150px; height: 50px; top: 15%; left: 100%; }
         .cloud.c1::before { width: 70px; height: 70px; top: -35px; left: 20px; }
-
         .cloud.c1::after { width: 50px; height: 50px; top: -25px; left: 80px; }
-
-        
-
-        .cloud.c2 { width: 200px; height: 60px; top: 50%; left: -210px; animation-delay: 5s; animation-duration: 25s; }
-
+        .cloud.c2 { width: 200px; height: 60px; top: 50%; left: 100%; animation-delay: 5s; animation-duration: 25s; }
         .cloud.c2::before { width: 90px; height: 90px; top: -45px; left: 30px; }
-
         .cloud.c2::after { width: 60px; height: 60px; top: -30px; left: 100px; }
-
-
-
-        @keyframes floatClouds {
-
+        @keyframes floatCloudsLeft {
             0% { transform: translateX(0); }
-
-            100% { transform: translateX(calc(100vw + 210px)); }
-
+            100% { transform: translateX(calc(-100vw - 250px)); }
         }
-
-
-
-        /* 提示文字 */
-
         .hint {
-
             position: absolute;
-
             top: 20%;
-
             font-size: 20px;
-
             color: #557a95;
-
             font-weight: bold;
-
             animation: pulse 1.5s infinite alternate;
-
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-
             z-index: 10;
-
+            pointer-events: none;
         }
-
         @keyframes pulse {
-
-            0% { opacity: 0.6; transform: scale(0.95); }
-
-            100% { opacity: 1; transform: scale(1.05); }
-
+            0% { transform: scale(0.95); opacity: 0.6; }
+            100% { transform: scale(1.05); opacity: 1; }
         }
-
-
-
-        /* 3D 場景容器 */
-
         .scene {
-
-            width: 300px;
-
-            height: 200px;
-
-            position: relative;
-
-            transform-style: preserve-3d;
-
-            transition: transform 1s ease;
-
-            cursor: pointer;
-
-        }
-
-
-
-        /* ================= 紙飛機 CSS ================= */
-
-        .paper-plane {
-
-            position: absolute;
-
-            width: 100%;
-
-            height: 100%;
-
-            transform-style: preserve-3d;
-
-            animation: flyAround 4s ease-in-out infinite alternate;
-
-        }
-
-
-
-        /* SVG 紙飛機造型 */
-
-        .plane-svg {
-
-            width: 150px;
-
-            height: 150px;
-
-            fill: #ffffff;
-
-            filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.15));
-
-            transform: rotate(-15deg);
-
-        }
-
-
-
-        @keyframes flyAround {
-
-            0% { transform: translateY(0) rotate(0deg); }
-
-            50% { transform: translateY(-15px) rotate(3deg); }
-
-            100% { transform: translateY(10px) rotate(-2deg); }
-
-        }
-
-
-
-        /* ================= 卡片 CSS ================= */
-
-        .card {
-
-            position: absolute;
-
             width: 320px;
-
             height: 450px;
-
-            background: white;
-
-            border-radius: 15px;
-
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-
-            padding: 30px;
-
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
             display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
             justify-content: center;
-
-            text-align: center;
-
-            opacity: 0;
-
-            transform: scale(0) rotate(-10deg);
-
-            pointer-events: none;
-
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-            border: 8px solid #fff;
-
-            outline: 2px dashed #b5d5ff;
-
+            align-items: center;
         }
-
-        
-
-        .card h1 {
-
-            color: #ff6b6b;
-
-            margin-bottom: 20px;
-
-            font-size: 28px;
-
-        }
-
-
-
-        .card p {
-
-            color: #4a4a4a;
-
-            line-height: 1.8;
-
-            font-size: 16px;
-
-            white-space: pre-line;
-
-        }
-
-
-
-        .card .decor {
-
-            font-size: 40px;
-
-            margin-top: 20px;
-
-            animation: bounce 1s infinite alternate;
-
-        }
-
-        @keyframes bounce {
-
-            0% { transform: translateY(0); }
-
-            100% { transform: translateY(-10px); }
-
-        }
-
-
-
-        /* ================= 狀態切換 ================= */
-
-        /* 點擊後隱藏飛機與提示 */
-
-        .clicked .paper-plane, .clicked .hint {
-
-            opacity: 0;
-
-            transform: scale(0) translateY(-100px);
-
-            pointer-events: none;
-
+        .paper-plane {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: flyAround 4s ease-in-out infinite alternate;
             transition: all 0.5s ease;
-
+            z-index: 5;
         }
-
-
-
-        /* 點擊後顯示卡片 */
-
-        .clicked .card {
-
-            opacity: 1;
-
-            transform: scale(1) rotate(0deg);
-
-            pointer-events: auto;
-
+        .plane-svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+            filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.15));
+            transform: rotate(-15deg);
         }
-
-
-
-        /* 慶祝紙花 */
-
-        .confetti {
-
+        @keyframes flyAround {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+            100% { transform: translateY(10px) rotate(-2deg); }
+        }
+        .card {
             position: absolute;
-
-            width: 10px;
-
-            height: 10px;
-
-            background-color: #f00;
-
-            position: absolute;
-
-            animation: confettiFall 3s linear forwards;
-
+            width: 320px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             opacity: 0;
-
+            transform: scale(0) rotate(-10deg);
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 8px solid #fff;
+            outline: 2px dashed #b5d5ff;
+            z-index: 2;
         }
-
+        .card h1 { color: #ff6b6b; margin-bottom: 15px; font-size: 26px; }
+        .card p { color: #4a4a4a; line-height: 1.6; font-size: 15px; white-space: pre-line; word-break: break-all; }
+        .card .decor { font-size: 35px; margin-top: 15px; animation: bounce 1s infinite alternate; }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        .clicked .paper-plane { opacity: 0; transform: scale(0) translateY(-100px); pointer-events: none; }
+        .clicked .card.active { opacity: 1; transform: scale(1) rotate(0deg); pointer-events: auto; }
+        .confetti { position: absolute; width: 10px; height: 10px; animation: confettiFall 3s linear forwards; opacity: 0; z-index: 1; }
         @keyframes confettiFall {
-
             0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-
         }
-
+        .flight-text-container {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .flight-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2b5876;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(100vw);
+            animation: flyInAndFade 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        @keyframes flyInAndFade {
+            0% { transform: translateX(100vw); opacity: 0; }
+            30% { transform: translateX(-5vw); opacity: 1; }
+            50% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-50vw); opacity: 0; }
+        }
+        /* 隱藏的 YouTube 音樂播放器，寬高設為0使其不佔空間 */
+        #bgMusic { width: 0; height: 0; position: absolute; visibility: hidden; }
     </style>
-
 </head>
-
 <body>
-
-
-
-    <!-- 背景飄動的雲朵 -->
-
     <div class="cloud c1"></div>
-
     <div class="cloud c2"></div>
-
-
-
-    <!-- 提示文字 -->
-
     <div class="hint" id="hintText">點擊紙飛機打開卡片 ✈️</div>
-
-
-
-    <!-- 主互動場景 -->
-
-    <div class="scene" id="mainScene" onclick="openCard()">
-
-        
-
-        <!-- 紙飛機物體 -->
-
+    <div class="scene" id="mainScene" onclick="handleSceneClick()">
         <div class="paper-plane">
-
-            <!-- 使用內嵌 SVG 畫出俐落的紙飛機 -->
-
             <svg class="plane-svg" viewBox="0 0 24 24">
-
                 <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
-
             </svg>
-
         </div>
-
-
-
-        <!-- 卡片物體 -->
-
-        <div class="card" id="letterCard">
-
-            <h1>親愛的朋友：</h1>
-
-            <p>好久不見！
-
-               這是一封用網頁寫給你的卡片。
-
-               祝你今天天天開心，
-
-               心想事成！✨
-
-            </p>
-
-            <div class="decor">❤️</div>
-
+        <div class="card active" id="letterCard">
+            <h1>親愛的波波：</h1>
+            <p id="cardContent">載入中...</p>
+            <div class="decor" id="cardDecor">❤️</div>
         </div>
-
-
-
     </div>
-
-
-
+    <!-- YouTube 嵌入標籤，預設不啟用 src，等點擊後才載入播放 -->
+    <iframe id="bgMusic" allow="autoplay" src=""></iframe>
     <script>
-
-        function openCard() {
-
-            const scene = document.getElementById('mainScene');
-
-            
-
-            // 如果已經打開過就不重複執行
-
-            if (scene.classList.contains('clicked')) return;
-
-
-
-            // 1. 切換 Class，觸發 CSS 隱藏飛機、放大卡片的動畫
-
-            scene.classList.add('clicked');
-
-
-
-            // 2. 釋放彩色慶祝紙花
-
-            createConfetti();
-
-        }
-
-
-
-        function createConfetti() {
-
-            const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#ff0a54'];
-
-            for (let i = 0; i < 100; i++) {
-
-                const confetti = document.createElement('div');
-
-                confetti.classList.add('confetti');
-
-                
-
-                // 隨機樣式設定
-
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-                confetti.style.left = Math.random() * 100 + 'vw';
-
-                confetti.style.top = '-5% ';
-
-                confetti.style.width = Math.random() * 8 + 5 + 'px';
-
-                confetti.style.height = Math.random() * 8 + 5 + 'px';
-
-                confetti.style.animationDelay = Math.random() * 1.5 + 's';
-
-                confetti.style.animationDuration = Math.random() * 2 + 2 + 's';
-
-                
-
-                document.body.appendChild(confetti);
-
-                
-
-                // 動畫結束後移除元素，避免卡頓
-
-                setTimeout(() => confetti.remove(), 4000);
-
+        // 💡 這裡就是管理所有小卡的地方！
+        const cardData = [
+            {
+                text: "波波,謝謝你這陣子的陪伴與支持,因為有你讓我更積極努力的成為更好的自己,也因為有你的出現為我的生活跟生命點燃了希望。我希望能夠永遠和你一起去挑戰,去創造屬於我們的未來。\n\nAug30",
+                decor: "❤️"
+            },
+            {
+                text: "波波,你今天好嗎?總是很期待與你一起生活的時光,充滿了期待也同時有點緊張,因為我不知道你內心真正的想法。今天看了LRH大廳的設計,我感動到淚流滿面,你知道嗎?我很期待有一天可以帶著我們的孩子一起去那裡散步玩耍,我看到這麼美好的創造時,真的希望可以跟你一起欣賞這個美。\n\nAug30",
+                decor: "✨"
+            },
+            {
+                text: "波波，我想要等孩子長大了，我們一起去旗艦好嗎？帶他們到迪士尼玩，我想陪著你們，看著你們一起幸福的成長❤️",
+                decor: "🏰"
             }
-
+            // 📝 想要加第4張、第5張，直接在下方點複製貼上這段即可：
+            // ,{
+            //     text: "在這裡輸入你想說的第4張小卡文字...",
+            //     decor: "🌟"
+            // }
+        ];
+        let currentCardIndex = 0;
+        let isFirstClick = true;
+        let isAnimating = false;
+        // 初始載入第一張卡片的文字
+        document.getElementById('cardContent').innerText = cardData[0].text;
+        document.getElementById('cardDecor').innerText = cardData[0].decor;
+        function handleSceneClick() {
+            if (isAnimating) return;
+            const scene = document.getElementById('mainScene');
+            if (isFirstClick) {
+                scene.classList.add('clicked');
+                document.getElementById('hintText').style.display = 'none';
+                createConfetti();
+                // 🎶 打開卡片時載入並自動播放 YouTube 背景音樂
+                document.getElementById('bgMusic').src = "https://youtube.com";
+                isFirstClick = false;
+            } else {
+                triggerFlightAndNextCard();
+            }
         }
-
-    </script>
-
-</body>
-
-</html>
+        function triggerFlightAndNextCard() {
+            isAnimating = true;
+            const container = document.createElement('div');
+            container.classList.add('flight-text-container');
+            const locations = ["澳洲ANZO", "台灣嘉義", "美國USA"];
+            locations.forEach((loc, index) => {
+                const textDiv = document.createElement('div');
+                textDiv.classList.add('flight-text');
+                textDiv.innerText = loc;
+                textDiv.style.animationDelay = `${index * 0.15}s`;
+                container.appendChild(textDiv);
+            });
+            document.body.appendChild(container);
+            // 切換到下一張卡片索引（如果到底了會自動重頭循環）
+            currentCardIndex = (currentCardIndex + 1) % cardData.length;
+            const card = document.getElementById('letterCard');
+            card.style.transform = 'scale(0) rotate(10deg)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('cardContent').innerText = cardData[currentCardIndex].text;
+                document.getElementById('cardDecor').innerText = cardData[currentCardIndex].decor;
+                card.style.transform = 'scale(1) rotate(0deg)';
+                card.style.opacity = '1';
+                createConfetti();
+            }, 600);
+            setTimeout(() => {
+                container.remove();
+                isAnimating = false;
+            }, 3000);
+        }
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#ff0a54'];
