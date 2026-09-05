@@ -172,22 +172,7 @@
             50% { transform: translateX(0); opacity: 1; }
             100% { transform: translateX(-50vw); opacity: 0; }
         }
-        #yt-player-container {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 1px;
-            height: 1px;
-            transform: none;
-            opacity: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        #yt-player-container iframe {
-            width: 1px;
-            height: 1px;
-            display: block;
-        }
+        audio { display: none; }
         @media (max-width: 420px) {
             .hint { top: 14%; font-size: 18px; }
             .card { padding: 22px; }
@@ -215,19 +200,9 @@
         </div>
     </div>
 
-    <div id="yt-player-container">
-        <iframe
-            id="songFrame"
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&enablejsapi=1&playsinline=1"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-        </iframe>
-    </div>
+    <audio id="songAudio" preload="auto" loop>
+        <source src="file:///Users/tiyu/Desktop/YTDown.com_YouTube_Ed-Sheeran-Photograph-Official-Music-Vid_Media_nSDgHBxUbVQ_009_128k.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const cardData = [
@@ -258,9 +233,8 @@
         const cardDecor = document.getElementById('cardDecor');
         const letterCard = document.getElementById('letterCard');
         const hintText = document.getElementById('hintText');
-        const songFrame = document.getElementById('songFrame');
+        const songAudio = document.getElementById('songAudio');
         const musicButton = document.getElementById('musicButton');
-        const musicPlayer = document.getElementById('yt-player-container');
 
         cardContent.innerText = cardData[0].text;
         cardDecor.innerText = cardData[0].decor;
@@ -283,12 +257,19 @@
         function playMusic(event) {
             event.stopPropagation();
 
-            if (hasStartedSong) return;
-
-            hasStartedSong = true;
-            musicButton.innerText = '音樂播放中 ♪';
-            musicButton.classList.add('playing');
-            songFrame.src = 'https://www.youtube.com/embed/nSDgHBxUbVQ?si=fKpY7-nQDQQeoepy&enablejsapi=1&playsinline=1&autoplay=1&controls=1';
+            if (songAudio.paused) {
+                songAudio.play().then(() => {
+                    hasStartedSong = true;
+                    musicButton.innerText = '音樂播放中 ♪';
+                    musicButton.classList.add('playing');
+                }).catch(() => {
+                    musicButton.innerText = '請再點一次播放 ♪';
+                });
+            } else {
+                songAudio.pause();
+                musicButton.innerText = '播放音樂 ♪';
+                musicButton.classList.remove('playing');
+            }
         }
 
         function triggerFlightAndNextCard() {
